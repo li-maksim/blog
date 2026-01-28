@@ -1,0 +1,21 @@
+{
+  "name": "maksim/blog",
+  "description": "Simple PHP Blog",
+  "type": "project",
+  "require": {
+    "php": "^8.1",
+    "ext-pdo": "*",
+    "ext-mysqli": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Maksim",
+      "email": "maksim.li3018@gmail.com"
+    }
+  ]
+}
