@@ -12,6 +12,8 @@ services:
       DB_NAME: blog_db
       DB_USER: blog_user
       DB_PASSWORD: password
+    env_file: 
+      - .env
     depends_on:
       - db
     networks:
