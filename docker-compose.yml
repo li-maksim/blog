@@ -6,7 +6,7 @@ services:
     ports:
       - "9000:80"
     volumes:
-      - ./src:/var/www/html  
+      - .:/var/www/html
     environment:
       DB_HOST: db
       DB_NAME: blog_db

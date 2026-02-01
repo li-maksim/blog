@@ -1,0 +1,42 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App;
+
+use App\Exceptions\RouteNotFound;
+
+class Router {
+    
+    private array $routes;
+
+    public function add(string $method, string $path, array | callable $action): self {
+        $this->routes[$method][$path] = $action;
+        return $this;
+    }
+
+    public function resolve(string $path, string $method) {
+        $route = explode('?', $path)[0];
+        $action = $this->routes[$method][$route] ?? null;
+
+        if (!$action) {
+            throw new RouteNotFound();
+        }
+
+        if (is_callable($action)) {
+            return call_user_func($action);
+        }
+
+        if (is_array($action)) {
+            [$class, $method] = $action;
+
+            if (class_exists($class)) {
+                $class = new $class();
+
+                if (method_exists($class, $method)) {
+                    return call_user_func_array([$class, $method], []);
+                }
+            }
+        }
+    }
+}
