@@ -2,39 +2,15 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$config = [
+define('CONFIG', [
     'host'     => getenv('DB_HOST'),
     'user'     => getenv('DB_USER'),
     'pass'     => getenv('DB_PASS'),
     'database' => getenv('DB_DATABASE'),
     'driver'   => getenv('DB_DRIVER'),
-];
-
-$pdo = new PDO(
-    $config['driver'] . ':host=' . $config['host'] . ';dbname=' . $config['database'],
-    $config['user'],
-    $config['pass'],
-    [
-        PDO::ATTR_EMULATE_PREPARES   => false,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    ]
-);
-
-$stmt = $pdo->query(
-    'SELECT
-        title, created_at, body
-    FROM
-        posts
-    ORDER BY
-        created_at DESC'
-);
+]);
 
 define('VIEW_PATH', __DIR__ . '/../src/Views');
-
-if ($stmt === false)
-{
-    throw new Exception('There was a problem running this query');
-}
 
 use App\App;
 use App\Router;

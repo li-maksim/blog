@@ -3,10 +3,11 @@
 namespace App\Controllers;
 
 use App\View;
+use App\Controller;
 
-class HomeController {
+class HomeController extends Controller {
 
     public function render() {
-        return View::show('home');
+        return $this->renderView('home');
     }
 }

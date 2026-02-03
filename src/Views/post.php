@@ -5,6 +5,6 @@
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     </head>
     <body>
-        <p>post</p>
+        <?php echo $allTitles ?>
     </body>
 </html>

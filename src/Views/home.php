@@ -13,7 +13,6 @@
         <p>
             <a href="#">Read more...</a>
         </p>
-        <!-- <?php echo $stmt->fetch()['title'] ?> -->
         <h2>Article 2 title</h2>
         <div>dd Mon YYYY</div>
         <p>A paragraph summarising article 2.</p>
