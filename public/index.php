@@ -24,7 +24,8 @@ $router
     ->add('get', '/', [HomeController::class, 'render'])
     ->add('get', '/post', [PostController::class, 'render'])
     ->add('get', '/login', [AuthController::class, 'renderLogin'])
-    ->add('get', '/signup', [AuthController::class, 'renderSignUp']);
+    ->add('get', '/signup', [AuthController::class, 'renderSignUp'])
+    ->add('post', '/signup', [AuthController::class, 'signUp']);
 
 (new App(
     $router,
