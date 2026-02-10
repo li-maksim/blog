@@ -10,7 +10,7 @@ abstract class Model {
 
     protected const TABLE_NAME = '';
 
-    private \PDO $pdo;
+    protected \PDO $pdo;
 
     public function __construct() {
         $this->pdo = DB::getInstance();

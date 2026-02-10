@@ -18,12 +18,16 @@ use App\Controllers\HomeController;
 use App\Controllers\PostController;
 use App\Controllers\AuthController;
 
+session_start();
+
 $router = new Router();
 
 $router
     ->add('get', '/', [HomeController::class, 'render'])
     ->add('get', '/post', [PostController::class, 'render'])
     ->add('get', '/login', [AuthController::class, 'renderLogin'])
+    ->add('post', '/login', [AuthController::class, 'login'])
+    ->add('get', '/logout', [AuthController::class, 'logout'])
     ->add('get', '/signup', [AuthController::class, 'renderSignUp'])
     ->add('post', '/signup', [AuthController::class, 'signUp']);
 
