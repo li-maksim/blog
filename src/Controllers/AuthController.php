@@ -50,8 +50,16 @@ class AuthController extends Controller {
         $password = $_POST['password'];
 
         try {
-            if ($this->usersModel->login($email, $password)) {
-            echo 'Welcome back, ' . htmlspecialchars($_SESSION['account_name'], ENT_QUOTES) . '!';
+
+            $userData = $this->usersModel->login($email, $password);
+
+            if ($userData) {
+                $_SESSION['account_loggedin'] = true;
+                $_SESSION['account_name'] = $userData['username'];
+                $_SESSION['account_id'] = $userData['id'];
+
+                header("Location: /");
+                exit;
             } else {
                 echo 'Incorrect username/password';
             }
@@ -60,7 +68,19 @@ class AuthController extends Controller {
         }
     }
 
-    public function logout() {
-        $this->usersModel->logout();
+        public function logout(): void {
+        $_SESSION= [];
+
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+
+        session_destroy();
+        header("Location: /");
+        exit;
     }
 }

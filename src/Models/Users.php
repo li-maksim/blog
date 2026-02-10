@@ -30,7 +30,7 @@ class Users extends Model {
         }
     }
 
-    public function login(string $email, string $password): bool {
+    public function login(string $email, string $password): array | false {
         // returns true or false, the AuthController authorizes user if true
         if (!$this->checkIfXExists('email', $email)) {
             throw new AuthException("There's no user with this username or email");
@@ -50,10 +50,7 @@ class Users extends Model {
             $username = $data['username'];
 
             if (password_verify($password, $correctPassword)) {
-                $_SESSION['account_loggedin'] = true;
-                $_SESSION['account_name'] = $username;
-                $_SESSION['account_id'] = $id;
-                return true;
+                return $data;
             } else {
                 return false;
             }
@@ -64,21 +61,5 @@ class Users extends Model {
             }
             throw new AuthException("Database error: " . $e->getMessage());
         }
-    }
-
-    public function logout(): void {
-        $_SESSION= [];
-
-        if (ini_get("session.use_cookies")) {
-            $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000,
-                $params["path"], $params["domain"],
-                $params["secure"], $params["httponly"]
-            );
-        }
-
-        session_destroy();
-        header("Location: /");
-        exit;
     }
 }
