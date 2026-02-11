@@ -5,7 +5,7 @@ namespace App;
 class View {
     public function __construct(protected string $view){}
 
-    public static function show(string $view, array $params = []): string {
+    public static function show(string $view, array $params = [], bool $partial = false): string {
         // $viewPath is included in mainView.php
         $viewPath = VIEW_PATH . '/' . $view . '.php';
         $mainView = VIEW_PATH . '/' . 'mainView.php';
@@ -22,7 +22,12 @@ class View {
             }
         }
 
-        include $mainView;
+        if (!$partial) {
+            include $mainView;
+        } else {
+            // An option to render not the full view, but individual component
+            include $viewPath;
+        }
 
         return (string) ob_get_clean();
     }

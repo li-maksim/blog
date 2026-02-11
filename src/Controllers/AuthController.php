@@ -20,13 +20,20 @@ class AuthController extends Controller {
     }
 
     public function renderSignUp() {
-        return $this->renderView('signup');
+        return $this->renderView('signup', ['error' => false]);
     }
 
     public function signUp() {
 
-        if (!isset($_POST['username'], $_POST['email'], $_POST['password'])) {
+        if (empty($_POST['username']) || empty($_POST['email']) || empty($_POST['password'])) {
             throw new \Exception('Please fill out all fields');
+        }
+
+        if($_POST['password'] !== $_POST['conf_password']) {
+            // echo "The passwords do not match";
+
+            $error = 'The passwords do not match';
+            return;
         }
 
         $username = $_POST['username'];
