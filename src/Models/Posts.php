@@ -13,7 +13,12 @@ class Posts extends Model {
 
         $tableName = static::TABLE_NAME;
 
-        $sql = "SELECT * FROM $tableName";
+        $sql = "SELECT 
+                    posts.*,
+                    users.username AS author_name
+                FROM posts
+                JOIN users on posts.author_id = users.id
+                ORDER BY posts.created_at DESC";
 
         try {
 

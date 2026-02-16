@@ -28,12 +28,13 @@ class HomeController extends Controller {
         $allPosts = '';
         
         foreach($postsData as $post) {
-
+            $dateTime = new \DateTime($post['created_at']);
+            $formattedDate = date_format($dateTime, 'd-m-Y H:i');
             $params = [
                 'title' => $post['title'],
                 'body' => $this->shortenStr($post['body']),
-                'createdAt' => $post['created_at'],
-                'author' => $post['author_id']
+                'createdAt' => $formattedDate,
+                'author' => $post['author_name']
             ];
             $allPosts .= View::show('postCard', $params, true);
         }
