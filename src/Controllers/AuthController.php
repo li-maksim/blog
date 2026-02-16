@@ -6,6 +6,7 @@ namespace App\Controllers;
 use App\View;
 use App\Controller;
 use App\Models\Users;
+use App\Exceptions\ThisUserExists;
 
 class AuthController extends Controller {
 
@@ -51,9 +52,12 @@ class AuthController extends Controller {
 
         try {
             $this->usersModel->signUp($username, $email, $password);
-            echo 'Success!';
-        } catch (\Exception $e) {
-            echo $e->getMessage();
+            header('Location: /login');
+            exit;
+        } catch (ThisUserExists $e) {
+            $_SESSION['flash_error'] = $e->getMessage();
+            header('Location: /signup');
+            exit;
         }
     }
 

@@ -15,6 +15,14 @@ class Router {
         return $this;
     }
 
+    public function get(string $path, array | callable $action): self {
+        return $this->add('get', $path, $action);
+    }
+
+        public function post(string $path, array | callable $action): self {
+        return $this->add('post', $path, $action);
+    }
+
     public function resolve(string $path, string $method) {
         $route = explode('?', $path)[0];
         $action = $this->routes[$method][$route] ?? null;
