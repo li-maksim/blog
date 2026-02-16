@@ -20,20 +20,29 @@ class AuthController extends Controller {
     }
 
     public function renderSignUp() {
-        return $this->renderView('signup', ['error' => false]);
+        $error = $_SESSION['flash_error'] ?? null;
+        $username = $_SESSION['old_username'] ?? null;
+        $email = $_SESSION['old_email'] ?? null;
+        unset($_SESSION['flash_error'], $_SESSION['old_username'], $_SESSION['old_email']);
+        return $this->renderView('signup', ['error' => $error, 'username' => $username, 'email' => $email]);
     }
 
     public function signUp() {
 
         if (empty($_POST['username']) || empty($_POST['email']) || empty($_POST['password'])) {
-            throw new \Exception('Please fill out all fields');
+            $_SESSION['flash_error'] = "Please fill out all the required fields";
+            $_SESSION['old_username'] = $_POST['username'] ?? '';
+            $_SESSION['old_email'] = $_POST['email'] ?? '';
+            header('Location: /signup');
+            exit;
         }
 
         if($_POST['password'] !== $_POST['conf_password']) {
-            // echo "The passwords do not match";
-
-            $error = 'The passwords do not match';
-            return;
+            $_SESSION['flash_error'] = "The passwords don't match";
+            $_SESSION['old_username'] = $_POST['username'] ?? '';
+            $_SESSION['old_email'] = $_POST['email'] ?? '';
+            header('Location: /signup');
+            exit;
         }
 
         $username = $_POST['username'];
