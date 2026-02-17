@@ -29,6 +29,7 @@ $router
     ->get('/logout', [AuthController::class, 'logout'])
     ->get('/signup', [AuthController::class, 'renderSignUp'])
     ->post('/signup', [AuthController::class, 'signUp'])
+    ->get('/post', [PostController::class, 'renderPost'])
     ->get('/post/create', [PostController::class, 'renderCreatePage'])
     ->post('/post/create', [PostController::class, 'createNewPost']);
 

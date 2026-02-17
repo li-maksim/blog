@@ -31,6 +31,7 @@ class HomeController extends Controller {
             $dateTime = new \DateTime($post['created_at']);
             $formattedDate = date_format($dateTime, 'd-m-Y H:i');
             $params = [
+                'id' => $post['id'],
                 'title' => $post['title'],
                 'body' => $this->shortenStr($post['body']),
                 'createdAt' => $formattedDate,

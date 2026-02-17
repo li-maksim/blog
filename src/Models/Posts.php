@@ -10,7 +10,6 @@ class Posts extends Model {
     protected const TABLE_NAME = 'posts';
 
     public function getAllPosts(): array {
-
         $sql = "SELECT 
                     posts.*,
                     users.username AS author_name
@@ -19,18 +18,34 @@ class Posts extends Model {
                 ORDER BY posts.created_at DESC";
 
         try {
-
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll();
-
         } catch(\PDOException $e) {
             throw new \Exception("Database error: " . $e->getMessage());
         }
     }
 
-    public function getPostById(): array {
-        
+    public function getPostById($id): array | false {
+
+        if (!$this->checkIfXExists('id', $id)) {
+            return false;
+        }
+
+        $sql = "SELECT 
+                    posts.*, 
+                    users.username AS author_name 
+                FROM posts 
+                JOIN users ON posts.author_id = users.id 
+                WHERE posts.id = $id";
+
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetch();
+        } catch(\PDOException $e) {
+            throw new \Exception("Database error: " . $e->getMessage());
+        }
     }
 
     public function createNewPost($title, $body, $authorId): void {

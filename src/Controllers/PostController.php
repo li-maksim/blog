@@ -24,7 +24,24 @@ class PostController extends Controller {
     }
 
     public function renderPost() {
-        
+        $id = explode('=', parse_url($_SERVER['REQUEST_URI'])['query'])[1];
+
+        $post = $this->postsModel->getPostById($id);
+
+        if (!$post) {
+            return $this->renderView('404');
+        }
+
+        $dateTime = new \DateTime($post['created_at']);
+        $formattedDate = date_format($dateTime, 'd-m-Y H:i');
+        $params = [
+            'title' => $post['title'],
+            'body' => $post['body'],
+            'createdAt' => $formattedDate,
+            'author' => $post['author_name']
+        ]; 
+
+        return $this->renderView('post', $params);
     }
 
     public function createNewPost(): void {
