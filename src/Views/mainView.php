@@ -12,10 +12,17 @@
             </div>
             <div class="navbar-nav">
                 <?php if (empty($_SESSION['account_loggedin'])): ?> 
-                    <a href="/login" class="btn btn-secondary">Login</a> 
-                    <a href="/signup" class="btn btn-secondary">Sign Up</a>
+                    <div class="flex">
+                        <a href="/login" class="btn btn-secondary">Login</a> 
+                        <a href="/signup" class="btn btn-secondary">Sign Up</a>
+                    </div>
                 <?php endif; ?>
-                <?php if ($_SESSION['account_loggedin'] ?? false): ?> <a href="/logout" class="btn btn-secondary">Log Out</a> <?php endif; ?>
+                <?php if ($_SESSION['account_loggedin'] ?? false): ?> 
+                    <div class="flex">
+                        <a href="/post/create" class="btn btn-secondary">New Post</a>
+                        <a href="/logout" class="btn btn-secondary">Log Out</a> 
+                    </div>
+                <?php endif; ?>
             </div>
         </header>
         <main>

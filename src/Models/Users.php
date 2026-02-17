@@ -57,7 +57,7 @@ class Users extends Model {
             if ($pdo->inTransaction()) {
             $pdo->rollBack();
             }
-            throw new AuthException("Database error: " . $e->getMessage());
+            throw new \Exception("Database error: " . $e->getMessage());
         }
     }
 }

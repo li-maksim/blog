@@ -11,8 +11,6 @@ class Posts extends Model {
 
     public function getAllPosts(): array {
 
-        $tableName = static::TABLE_NAME;
-
         $sql = "SELECT 
                     posts.*,
                     users.username AS author_name
@@ -29,5 +27,13 @@ class Posts extends Model {
         } catch(\PDOException $e) {
             throw new \Exception("Database error: " . $e->getMessage());
         }
+    }
+
+    public function getPostById(): array {
+        
+    }
+
+    public function createNewPost($title, $body, $authorId): void {
+        $this->insertInto(['title', 'body', 'author_id'], [$title, $body, $authorId]);
     }
 }

@@ -7,6 +7,7 @@ use App\View;
 use App\Controller;
 use App\Models\Users;
 use App\Exceptions\ThisUserExists;
+use App\Exceptions\AuthException;
 
 class AuthController extends Controller {
 
@@ -17,7 +18,10 @@ class AuthController extends Controller {
     }
 
     public function renderLogin() {
-        return $this->renderView('login');
+        $error = $_SESSION['flash_error'] ?? null;
+        $email = $_SESSION['old_email'] ?? null;
+        unset($_SESSION['flash_error'], $_SESSION['old_email']);
+        return $this->renderView('login', ['error' => $error, 'email' => $email]);
     }
 
     public function renderSignUp() {
@@ -81,10 +85,15 @@ class AuthController extends Controller {
                 header("Location: /");
                 exit;
             } else {
-                echo 'Incorrect username/password';
+                $_SESSION['flash_error'] = "Incorrect username/password";
+                $_SESSION['old_email'] = $_POST['email'] ?? '';
+                header('Location: /login');
+                exit;
             }
-        } catch (\Exception $e) {
-            echo $e->getMessage();
+        } catch (AuthException $e) { 
+            $_SESSION['flash_error'] = $e->getMessage();
+            header('Location: /login');
+            exit;
         }
     }
 

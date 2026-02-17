@@ -24,12 +24,13 @@ $router = new Router();
 
 $router
     ->get('/', [HomeController::class, 'render'])
-    ->get('/post', [PostController::class, 'render'])
     ->get('/login', [AuthController::class, 'renderLogin'])
     ->post('/login', [AuthController::class, 'login'])
     ->get('/logout', [AuthController::class, 'logout'])
     ->get('/signup', [AuthController::class, 'renderSignUp'])
-    ->post('/signup', [AuthController::class, 'signUp']);
+    ->post('/signup', [AuthController::class, 'signUp'])
+    ->get('/post/create', [PostController::class, 'renderCreatePage'])
+    ->post('/post/create', [PostController::class, 'createNewPost']);
 
 (new App(
     $router,

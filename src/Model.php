@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace App;
 
 use App\DB;
-use App\Exceptions\AuthException;
 
 abstract class Model {
 
@@ -56,7 +55,7 @@ abstract class Model {
             if ($pdo->inTransaction()) {
             $pdo->rollBack();
             }
-            throw new AuthException("Database error: " . $e->getMessage());
+            throw new \Exception("Database error: " . $e->getMessage());
         }
     }
 }
