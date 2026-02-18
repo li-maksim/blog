@@ -17,13 +17,15 @@ class Posts extends Model {
                 JOIN users on posts.author_id = users.id
                 ORDER BY posts.created_at DESC";
 
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll();
-        } catch(\PDOException $e) {
-            throw new \Exception("Database error: " . $e->getMessage());
-        }
+        return $this->executeSql($sql)->fetchAll();
+
+        // try {
+        //     $stmt = $this->pdo->prepare($sql);
+        //     $stmt->execute();
+        //     return $stmt->fetchAll();
+        // } catch(\PDOException $e) {
+        //     throw new \Exception("Database error: " . $e->getMessage());
+        // }
     }
 
     public function getPostById($id): array | false {
@@ -38,14 +40,14 @@ class Posts extends Model {
                 FROM posts 
                 JOIN users ON posts.author_id = users.id 
                 WHERE posts.id = $id";
-
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetch();
-        } catch(\PDOException $e) {
-            throw new \Exception("Database error: " . $e->getMessage());
-        }
+        return $this->executeSql($sql)->fetch();
+        // try {
+        //     $stmt = $this->pdo->prepare($sql);
+        //     $stmt->execute();
+        //     return $stmt->fetch();
+        // } catch(\PDOException $e) {
+        //     throw new \Exception("Database error: " . $e->getMessage());
+        // }
     }
 
     public function createNewPost($title, $body, $authorId): void {

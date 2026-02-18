@@ -52,9 +52,20 @@ abstract class Model {
             $stmt->execute($values);
             // echo $sql;
         } catch(\PDOException $e) {
-            if ($pdo->inTransaction()) {
-            $pdo->rollBack();
+            throw new \Exception("Database error: " . $e->getMessage());
+        }
+    }
+
+    protected function executeSql(string $sql, array $vals = []) {
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            if (!count($vals)) {
+                $stmt->execute();
+            } else {
+                $stmt->execute($vals);
             }
+            return $stmt;
+        } catch(\PDOException $e) {
             throw new \Exception("Database error: " . $e->getMessage());
         }
     }
