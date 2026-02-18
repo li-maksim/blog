@@ -11,20 +11,24 @@ class PostController extends Controller {
 
     private Posts $postsModel;
 
+    private function getPostId() {
+        return $_GET['id'];
+    }
+
     public function __construct() {
         $this->postsModel = new Posts();
     }
 
     public function renderCreatePage() {
         if ($_SESSION['account_loggedin'] ?? false) {
-            return $this->renderView('post/create');
+            return $this->renderView('post/create', ['btnText' => 'Create']);
         } else {
-            echo View::show('404');
+            return View::show('404');
         }
     }
 
     public function renderPost() {
-        $id = explode('=', parse_url($_SERVER['REQUEST_URI'])['query'])[1];
+        $id = $this->getPostId();
 
         $post = $this->postsModel->getPostById($id);
 
@@ -32,13 +36,16 @@ class PostController extends Controller {
             return $this->renderView('404');
         }
 
-        $dateTime = new \DateTime($post['created_at']);
-        $formattedDate = date_format($dateTime, 'd-m-Y H:i');
+        $editable = $post['author_id'] == $_SESSION['account_id'];
+
         $params = [
             'title' => $post['title'],
-            'body' => $post['body'],
-            'createdAt' => $formattedDate,
-            'author' => $post['author_name']
+            'body' => nl2br(htmlspecialchars($post['body'])),
+            'createdAt' => $this->formatDate($post['created_at']),
+            'updatedAt' => $this->formatDate($post['updated_at']),
+            'author' => $post['author_name'],
+            'id' => $post['id'],
+            'editable' => $editable
         ]; 
 
         return $this->renderView('post', $params);
@@ -60,6 +67,36 @@ class PostController extends Controller {
 
         $this->postsModel->createNewPost($title, $body, $id);
         header('Location: /');
+        exit;
+    }
+
+    public function renderEditPage() {
+        $postId = $this->getPostId();
+        $post = $this->postsModel->getPostById($postId);
+
+        if ($_SESSION['account_id'] !== $post['author_id']) {
+            return View::show('404');
+        }
+
+        return View::show('post/create', ['oldTitle' => $post['title'], 'oldBody' => htmlspecialchars($post['body']), 'btnText' => 'Edit']);
+    }
+
+    public function updatePost() {
+        $id = $this->getPostId();
+
+        if (empty($_POST['title']) || empty($_POST['body'])) {
+            $_SESSION['flash_error'] = "Please fill out all the required fields";
+            $_SESSION['old_title'] = $_POST['title'] ?? '';
+            $_SESSION['old_body'] = $_POST['body'] ?? '';
+            header('Location: /post/create');
+            exit;
+        }
+
+        $title = $_POST['title'];
+        $body = $_POST['body'];
+
+        $this->postsModel->updatePost($id, [$title, $body]);
+        header("Location: /post?id=$id");
         exit;
     }
 }

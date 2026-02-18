@@ -48,27 +48,6 @@ class Users extends Model {
         } else {
             return false;
         }
-
-        // try {
-        //     $stmt = $this->pdo->prepare($sql);
-        //     $stmt->execute([$email]);
-            
-        //     $data = $stmt->fetch();
-        //     $correctPassword = $data['password'];
-        //     $id = $data['id'];
-        //     $username = $data['username'];
-
-        //     if (password_verify($password, $correctPassword)) {
-        //         return $data;
-        //     } else {
-        //         return false;
-        //     }
-
-        // } catch(\PDOException $e) {
-        //     if ($pdo->inTransaction()) {
-        //     $pdo->rollBack();
-        //     }
-        //     throw new \Exception("Database error: " . $e->getMessage());
-        // }
     }
+
 }

@@ -31,7 +31,9 @@ $router
     ->post('/signup', [AuthController::class, 'signUp'])
     ->get('/post', [PostController::class, 'renderPost'])
     ->get('/post/create', [PostController::class, 'renderCreatePage'])
-    ->post('/post/create', [PostController::class, 'createNewPost']);
+    ->post('/post/create', [PostController::class, 'createNewPost'])
+    ->get('/post/edit', [PostController::class, 'renderEditPage'])
+    ->post('/post/edit', [PostController::class, 'updatePost']);
 
 (new App(
     $router,

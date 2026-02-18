@@ -1,6 +1,14 @@
-<h1><?php echo $title ?></h2>
+<div class="flex">
+    <h1><?php echo $title ?></h1>
+    <?php if ($editable): ?> 
+        <a href=<?="/post/edit?id=$id"?> class="btn btn-primary">Edit</a>
+    <?php endif; ?>
+</div>
 <div>
-    <div>Published by <?php echo $author ?> on <?php echo $createdAt ?> </div>
+    <div>
+        <p>Published by <?php echo $author ?> on <?php echo $createdAt ?></p>
+        <?php if ($updatedAt): ?><p>(updated on <?= $updatedAt ?>)</p><?php endif; ?>
+    </div>
     <div><?php echo $body ?></div>
 </div>
 <div>

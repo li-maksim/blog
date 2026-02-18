@@ -18,14 +18,6 @@ class Posts extends Model {
                 ORDER BY posts.created_at DESC";
 
         return $this->executeSql($sql)->fetchAll();
-
-        // try {
-        //     $stmt = $this->pdo->prepare($sql);
-        //     $stmt->execute();
-        //     return $stmt->fetchAll();
-        // } catch(\PDOException $e) {
-        //     throw new \Exception("Database error: " . $e->getMessage());
-        // }
     }
 
     public function getPostById($id): array | false {
@@ -41,16 +33,18 @@ class Posts extends Model {
                 JOIN users ON posts.author_id = users.id 
                 WHERE posts.id = $id";
         return $this->executeSql($sql)->fetch();
-        // try {
-        //     $stmt = $this->pdo->prepare($sql);
-        //     $stmt->execute();
-        //     return $stmt->fetch();
-        // } catch(\PDOException $e) {
-        //     throw new \Exception("Database error: " . $e->getMessage());
-        // }
     }
 
     public function createNewPost($title, $body, $authorId): void {
         $this->insertInto(['title', 'body', 'author_id'], [$title, $body, $authorId]);
+    }
+
+    public function updatePost(string $id, array $vals): void {
+        $sql = "UPDATE posts
+                    SET title = ?, body = ?
+                WHERE id = ?";
+        array_push($vals, $id);
+
+        $this->executeSql($sql, $vals);
     }
 }
