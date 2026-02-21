@@ -20,7 +20,7 @@ class Posts extends Model {
         return $this->executeSql($sql)->fetchAll();
     }
 
-    public function getPostById($id): array | false {
+    public function getPostById(string $id): array | false {
 
         if (!$this->checkIfXExists('id', $id)) {
             return false;
@@ -35,7 +35,7 @@ class Posts extends Model {
         return $this->executeSql($sql)->fetch();
     }
 
-    public function createNewPost($title, $body, $authorId): void {
+    public function createNewPost(string $title, string $body, string $authorId): void {
         $this->insertInto(['title', 'body', 'author_id'], [$title, $body, $authorId]);
     }
 
@@ -46,5 +46,10 @@ class Posts extends Model {
         array_push($vals, $id);
 
         $this->executeSql($sql, $vals);
+    }
+
+    public function deletePost(string $id) {
+        $sql = "DELETE FROM posts WHERE id = ?";
+        $this->executeSql($sql, [$id]);
     }
 }

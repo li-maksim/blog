@@ -2,6 +2,7 @@
     <h1><?php echo $title ?></h1>
     <?php if ($editable): ?> 
         <a href=<?="/post/edit?id=$id"?> class="btn btn-primary">Edit</a>
+        <a href=<?="/post/delete?id=$id"?> class="btn btn-primary">Delete</a>
     <?php endif; ?>
 </div>
 <div>

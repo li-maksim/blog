@@ -11,12 +11,21 @@ class PostController extends Controller {
 
     private Posts $postsModel;
 
+    public function __construct() {
+        $this->postsModel = new Posts();
+    }
+
     private function getPostId() {
         return $_GET['id'];
     }
 
-    public function __construct() {
-        $this->postsModel = new Posts();
+    private function verifyAuthor(): bool {
+        $post = $this->postsModel->getPostById($this->getPostId());
+        if (($_SESSION['account_id'] ?? '') !== $post['author_id']) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public function renderCreatePage() {
@@ -36,7 +45,7 @@ class PostController extends Controller {
             return $this->renderView('404');
         }
 
-        $editable = $post['author_id'] == $_SESSION['account_id'];
+        $editable = ($post['author_id'] == ($_SESSION['account_id'] ?? ''));
 
         $params = [
             'title' => $post['title'],
@@ -62,7 +71,7 @@ class PostController extends Controller {
 
         $title = $_POST['title'];
         $body = $_POST['body'];
-        $id = $_SESSION['account_id'];
+        $id = (string) $_SESSION['account_id'];
 
 
         $this->postsModel->createNewPost($title, $body, $id);
@@ -71,10 +80,9 @@ class PostController extends Controller {
     }
 
     public function renderEditPage() {
-        $postId = $this->getPostId();
-        $post = $this->postsModel->getPostById($postId);
+        $post = $this->postsModel->getPostById($this->getPostId());
 
-        if ($_SESSION['account_id'] !== $post['author_id']) {
+        if (!$this->verifyAuthor()) {
             return View::show('404');
         }
 
@@ -99,4 +107,16 @@ class PostController extends Controller {
         header("Location: /post?id=$id");
         exit;
     }
+
+    public function deletePost() {
+        if (!$this->verifyAuthor()) {
+            return View::show('404');
+        }
+
+        $this->postsModel->deletePost($this->getPostId());
+        header("Location: /");
+        exit;
+    }
+
+    // To do: refactor with verifyAuthor()
 }

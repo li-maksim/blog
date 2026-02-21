@@ -33,7 +33,8 @@ $router
     ->get('/post/create', [PostController::class, 'renderCreatePage'])
     ->post('/post/create', [PostController::class, 'createNewPost'])
     ->get('/post/edit', [PostController::class, 'renderEditPage'])
-    ->post('/post/edit', [PostController::class, 'updatePost']);
+    ->post('/post/edit', [PostController::class, 'updatePost'])
+    ->get('/post/delete', [PostController::class, 'deletePost']);
 
 (new App(
     $router,
