@@ -14,5 +14,15 @@
 </div>
 <div>
     <h2>Comments</h2>
-    <p>There are no coments yet.</p>
+    <?php if (!empty($_SESSION['account_loggedin'])): ?>
+        <form action="POST">
+            <textarea cols="50" rows="8" name="body" placeholder="Write your comment" required></textarea>
+            <button type="submit" class="btn btn-primary">Comment</button>
+        </form>
+    <?php endif; ?>
+    <?php if (!empty($allComments)): ?>
+        <div class="d-flex flex-column gap-3"><? echo $allComments ?></div>
+    <?php  else: ?>
+        <p>There are no comments yet.</p>
+    <?php endif; ?>
 </div>

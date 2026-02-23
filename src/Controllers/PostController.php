@@ -6,13 +6,16 @@ namespace App\Controllers;
 use App\View;
 use App\Controller;
 use App\Models\Posts;
+use App\Models\Comments;
 
 class PostController extends Controller {
 
     private Posts $postsModel;
+    private Comments $commentsModel;
 
     public function __construct() {
         $this->postsModel = new Posts();
+        $this->commentsModel = new Comments();
     }
 
     private function getPostId() {
@@ -47,6 +50,19 @@ class PostController extends Controller {
 
         $editable = ($post['author_id'] == ($_SESSION['account_id'] ?? ''));
 
+        $comments = $this->commentsModel->getCommentsByPostId($id) ?? '';
+        $allComments = '';
+        if ($comments) {
+            foreach($comments as $comment) {
+                $params = [
+                    'body' => nl2br(htmlspecialchars($comment['body'])),
+                    'createdAt' => $this->formatDate($comment['created_at']),
+                    'author' => $comment['author_name'],
+                ];
+                $allComments .= View::show('comment', $params, true);
+            }
+        }
+
         $params = [
             'title' => $post['title'],
             'body' => nl2br(htmlspecialchars($post['body'])),
@@ -54,7 +70,8 @@ class PostController extends Controller {
             'updatedAt' => $this->formatDate($post['updated_at']),
             'author' => $post['author_name'],
             'id' => $post['id'],
-            'editable' => $editable
+            'editable' => $editable,
+            'allComments' => $allComments
         ]; 
 
         return $this->renderView('post', $params);
@@ -118,5 +135,9 @@ class PostController extends Controller {
         exit;
     }
 
-    // To do: refactor with verifyAuthor()
+    public function postNewComment() {
+        $this
+            ->commentsModel
+            ->postNewComment($this->getPostId(), $_SESSION['account_id'], $_POST['body']);
+    }
 }
