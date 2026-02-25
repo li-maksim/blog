@@ -15,7 +15,7 @@
 <div>
     <h2>Comments</h2>
     <?php if (!empty($_SESSION['account_loggedin'])): ?>
-        <form action="POST">
+        <form method="POST">
             <textarea cols="50" rows="8" name="body" placeholder="Write your comment" required></textarea>
             <button type="submit" class="btn btn-primary">Comment</button>
         </form>

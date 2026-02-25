@@ -138,6 +138,10 @@ class PostController extends Controller {
     public function postNewComment() {
         $this
             ->commentsModel
-            ->postNewComment($this->getPostId(), $_SESSION['account_id'], $_POST['body']);
+            ->postNewComment($this->getPostId(), (string) $_SESSION['account_id'], $_POST['body']);
+
+        $id = $this->getPostId();
+        header("Location: /post?id=$id");
+        exit;
     }
 }

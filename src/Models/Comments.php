@@ -22,6 +22,6 @@ class Comments extends Model {
     }
 
     public function postNewComment(string $postId, string $authorId, string $body) {
-        $this->insertInto(['post_id, author_id, body'], [$postId, $authirId, $body]);
+        $this->insertInto(['post_id', 'author_id', 'body'], [$postId, $authorId, $body]);
     }
 }

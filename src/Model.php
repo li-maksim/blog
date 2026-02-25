@@ -39,9 +39,9 @@ abstract class Model {
         $args = '';
         for ($i = 0; $i < count($keys); $i++) {
             if ($i === count($keys) - 1) {
-                $args = $args . '?';
+                $args .= '?';
             } else {
-                $args = $args . '?, ';
+                $args .= '?, ';
             }
         }
 
