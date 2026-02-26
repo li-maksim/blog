@@ -3,7 +3,6 @@
 declare(strict_types = 1);
 namespace App\Controllers;
 
-use App\View;
 use App\Controller;
 use App\Models\Users;
 use App\Exceptions\ThisUserExists;

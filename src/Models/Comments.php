@@ -21,6 +21,14 @@ class Comments extends Model {
         return $this->executeSql($sql, [$id])->fetchAll();
     }
 
+    public function getCommentsByUserId(string | int $id): array {
+        return $this->getAllByUserId($id);
+    }
+
+        public function getCommentsByUsername(string $username): array {
+        return $this->getAllByUsername($username);
+    }
+
     public function postNewComment(string $postId, string $authorId, string $body) {
         $this->insertInto(['post_id', 'author_id', 'body'], [$postId, $authorId, $body]);
     }

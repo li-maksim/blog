@@ -17,4 +17,12 @@ abstract class Controller {
         $dateTime = new \DateTime($date);
         return date_format($dateTime, 'd-m-Y, H:i');
     }
+
+    protected function checkIfLoggedin() {
+        if (!$_SESSION['account_loggedin'] ?? false) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

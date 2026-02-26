@@ -7,7 +7,7 @@
 </div>
 <div>
     <div>
-        <p>Published by <?php echo $author ?> on <?php echo $createdAt ?></p>
+        <p>Published by <a href="<?= '/user?name=' . $author ?>"><? echo $author ?></a> on <?php echo $createdAt ?></p>
         <?php if ($updatedAt): ?><p>(updated on <?= $updatedAt ?>)</p><?php endif; ?>
     </div>
     <div><?php echo $body ?></div>

@@ -35,7 +35,7 @@ class PostController extends Controller {
         if ($_SESSION['account_loggedin'] ?? false) {
             return $this->renderView('post/create', ['btnText' => 'Create']);
         } else {
-            return View::show('404');
+            return $this->renderView('404');
         }
     }
 
@@ -100,10 +100,10 @@ class PostController extends Controller {
         $post = $this->postsModel->getPostById($this->getPostId());
 
         if (!$this->verifyAuthor()) {
-            return View::show('404');
+            return $this->renderView('404');
         }
 
-        return View::show('post/create', ['oldTitle' => $post['title'], 'oldBody' => htmlspecialchars($post['body']), 'btnText' => 'Edit']);
+        return $this->renderView('post/create', ['oldTitle' => $post['title'], 'oldBody' => htmlspecialchars($post['body']), 'btnText' => 'Edit']);
     }
 
     public function updatePost() {

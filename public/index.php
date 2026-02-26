@@ -17,6 +17,7 @@ use App\Router;
 use App\Controllers\HomeController;
 use App\Controllers\PostController;
 use App\Controllers\AuthController;
+use App\Controllers\UserPageController;
 
 session_start();
 
@@ -35,7 +36,9 @@ $router
     ->post('/post/create', [PostController::class, 'createNewPost'])
     ->get('/post/edit', [PostController::class, 'renderEditPage'])
     ->post('/post/edit', [PostController::class, 'updatePost'])
-    ->get('/post/delete', [PostController::class, 'deletePost']);
+    ->get('/post/delete', [PostController::class, 'deletePost'])
+    ->get('/my_page', [UserPageController::class, 'renderMyPage'])
+    ->get('/user', [UserPageController::class, 'renderUserPage']);
 
 (new App(
     $router,

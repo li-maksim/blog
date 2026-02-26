@@ -20,6 +20,7 @@
                 <?php if ($_SESSION['account_loggedin'] ?? false): ?> 
                     <div class="flex">
                         <a href="/post/create" class="btn btn-secondary">New Post</a>
+                        <a href="/my_page" class="btn btn-secondary">My Page</a>
                         <a href="/logout" class="btn btn-secondary">Log Out</a> 
                     </div>
                 <?php endif; ?>

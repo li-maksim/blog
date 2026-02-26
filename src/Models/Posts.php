@@ -31,8 +31,16 @@ class Posts extends Model {
                     users.username AS author_name 
                 FROM posts 
                 JOIN users ON posts.author_id = users.id 
-                WHERE posts.id = $id";
-        return $this->executeSql($sql)->fetch();
+                WHERE posts.id = ?";
+        return $this->executeSql($sql, [$id])->fetch();
+    }
+
+    public function getPostsByUserId(string | int $id): array {
+        return $this->getAllByUserId($id);
+    }
+
+    public function getPostsByUsername(string $username): array {
+        return $this->getAllByUsername($username);
     }
 
     public function createNewPost(string $title, string $body, string $authorId): void {

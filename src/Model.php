@@ -69,4 +69,21 @@ abstract class Model {
             throw new \Exception("Database error: " . $e->getMessage());
         }
     }
+
+    protected function getAllByUserId(string | int $id): array {
+        $tableName = static::TABLE_NAME;
+        $sql = "SELECT * FROM $tableName WHERE author_id = ?";
+        return $this->executeSql($sql, [$id])->fetchAll();
+    }
+
+    protected function getAllByUsername(string $username): array {
+        $tableName = static::TABLE_NAME;
+        $sql = "SELECT 
+                    $tableName.*, 
+                    users.username AS author_name 
+                FROM $tableName 
+                JOIN users ON $tableName.author_id = users.id 
+                WHERE users.username = ?";
+        return $this->executeSql($sql, [$username])->fetchAll();
+    }
 }
