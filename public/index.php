@@ -38,7 +38,9 @@ $router
     ->post('/post/edit', [PostController::class, 'updatePost'])
     ->get('/post/delete', [PostController::class, 'deletePost'])
     ->get('/my_page', [UserPageController::class, 'renderMyPage'])
-    ->get('/user', [UserPageController::class, 'renderUserPage']);
+    ->get('/user', [UserPageController::class, 'renderUserPage'])
+    ->get('/user/posts', [UserPageController::class, 'renderUserPosts'])
+    ->get('/user/comments', [UserPageController::class, 'renderUserComments']);
 
 (new App(
     $router,

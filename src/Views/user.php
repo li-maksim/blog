@@ -9,7 +9,7 @@
     <div>
         <h2>Posts</h2>
         <?php if ($postsNum > 0): ?>
-            <p><?= $postsNum ?> <a href="<?= '/user/' . $username . '/posts' ?>">posts</a></p>
+            <p><?= $postsNum ?> <a href="<?= '/user/posts?name=' . $username ?>">posts</a></p>
         <?php else: ?>
             <p>0 posts yet.</p>
         <?php endif; ?>
@@ -17,7 +17,7 @@
     <div>
         <h2>Comments</h2>
         <?php if ($commentsNum > 0): ?>
-            <p><?= $commentsNum ?> <a href="<?= '/user/' . $username . '/comments' ?>">comments</a></p>
+            <p><?= $commentsNum ?> <a href="<?= '/user/comments?name=' . $username ?>">comments</a></p>
         <?php else: ?>
             <p>0 comments yet.</p>
         <?php endif; ?>

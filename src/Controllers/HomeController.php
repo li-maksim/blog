@@ -14,14 +14,6 @@ class HomeController extends Controller {
         $this->postsModel = new Posts();
     }
 
-    private function shortenStr(string $str): string {
-        if (strlen($str) > 250) {
-            return substr($str, 0, 250) . '...';
-        } else {
-            return $str;
-        }
-    }
-
     public function render() {
         $postsData = $this->postsModel->getAllPosts();
         

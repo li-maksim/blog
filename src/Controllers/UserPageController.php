@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\View;
 use App\Controller;
 use App\Models\Users;
 use App\Models\Posts;
@@ -48,5 +49,43 @@ class UserPageController extends Controller {
             'commentsNum' => count($comments)
         ];
         return $this->renderView('user', $params);
+    }
+
+    public function renderUserPosts() {
+        $username = $_GET['name'];
+        $posts = $this->postsModel->getPostsByUsername($username);
+
+        $allPosts = '';
+
+        foreach($posts as $post) {
+            $params = [
+                'id' => $post['id'],
+                'title' => $post['title'],
+                'body' => $this->shortenStr($post['body']),
+                'createdAt' => $this->formatDate($post['created_at']),
+                'author' => $post['author_name']
+            ];
+            $allPosts .= View::show('postCard', $params, true);
+        }
+
+        return $this->renderView('/user/posts', ['username' => $username, 'allPosts' => $allPosts]);
+    }
+
+    public function renderUserComments() {
+        $username = $_GET['name'];
+        $comments = $this->commentsModel->getCommentsByUsername($username);
+
+        $allComments = '';
+
+        foreach($comments as $comment) {
+            $params = [
+                'createdAt' => $this->formatDate($comment['created_at']),
+                'body' => $comment['body'],
+                'postId' => $comment['post_id']
+            ];
+            $allComments .= View::show('commentCard', $params, true);
+        }
+
+        return $this->renderView('/user/comments', ['username' => $username, 'allComments' => $allComments]);
     }
 }

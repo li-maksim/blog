@@ -1,4 +1,4 @@
 <div>
-    <div>By <?php echo $author ?> on <?php echo $createdAt ?> </div>
-    <div><?php echo $body ?></div>
+    <div>By <a href="<?= '/user?name=' . $author ?>"><?= $author ?></a> on <?= $createdAt ?> </div>
+    <div><?= $body ?></div>
 </div>

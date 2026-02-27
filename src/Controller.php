@@ -25,4 +25,12 @@ abstract class Controller {
             return true;
         }
     }
+
+    protected function shortenStr(string $str): string {
+        if (strlen($str) > 250) {
+            return substr($str, 0, 250) . '...';
+        } else {
+            return $str;
+        }
+    }
 }
