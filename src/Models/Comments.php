@@ -29,7 +29,17 @@ class Comments extends Model {
         return $this->getAllByUsername($username);
     }
 
-    public function postNewComment(string $postId, string $authorId, string $body) {
+    public function getCommentById($id): array {
+        $sql = "SELECT * FROM comments WHERE id = ?";
+        return $this->executeSql($sql, [$id])->fetch();
+    }
+
+    public function postNewComment(string $postId, string $authorId, string $body): void {
         $this->insertInto(['post_id', 'author_id', 'body'], [$postId, $authorId, $body]);
+    }
+
+    public function deleteCommentById($id): void {
+        $sql = "DELETE FROM comments WHERE id = ?";
+        $this->executeSql($sql, [$id]);
     }
 }

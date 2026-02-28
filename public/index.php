@@ -18,6 +18,7 @@ use App\Controllers\HomeController;
 use App\Controllers\PostController;
 use App\Controllers\AuthController;
 use App\Controllers\UserPageController;
+use App\Controllers\CommentController;
 
 session_start();
 
@@ -40,7 +41,8 @@ $router
     ->get('/my_page', [UserPageController::class, 'renderMyPage'])
     ->get('/user', [UserPageController::class, 'renderUserPage'])
     ->get('/user/posts', [UserPageController::class, 'renderUserPosts'])
-    ->get('/user/comments', [UserPageController::class, 'renderUserComments']);
+    ->get('/user/comments', [UserPageController::class, 'renderUserComments'])
+    ->get('/comment/delete', [CommentController::class, 'deleteComment']);
 
 (new App(
     $router,

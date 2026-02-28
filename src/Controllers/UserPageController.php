@@ -81,7 +81,8 @@ class UserPageController extends Controller {
             $params = [
                 'createdAt' => $this->formatDate($comment['created_at']),
                 'body' => $comment['body'],
-                'postId' => $comment['post_id']
+                'postId' => $comment['post_id'],
+                'commentId' => $comment['id']
             ];
             $allComments .= View::show('commentCard', $params, true);
         }

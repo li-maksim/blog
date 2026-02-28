@@ -48,16 +48,24 @@ class PostController extends Controller {
             return $this->renderView('404');
         }
 
-        $editable = ($post['author_id'] == ($_SESSION['account_id'] ?? ''));
+        $editable = $this->verifyAuthor();
 
         $comments = $this->commentsModel->getCommentsByPostId($id) ?? '';
         $allComments = '';
         if ($comments) {
             foreach($comments as $comment) {
+                $isAuthor = false;
+                if (($_SESSION['account_id'] ?? '') !== $comment['author_id']) {
+                    $isAuthor = false;
+                } else {
+                    $isAuthor = true;
+                }
                 $params = [
                     'body' => nl2br(htmlspecialchars($comment['body'])),
                     'createdAt' => $this->formatDate($comment['created_at']),
                     'author' => $comment['author_name'],
+                    'isAuthor' => $isAuthor,
+                    'commentId' => $comment['id']
                 ];
                 $allComments .= View::show('comment', $params, true);
             }
