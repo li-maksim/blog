@@ -25,7 +25,8 @@ class HomeController extends Controller {
                 'title' => $post['title'],
                 'body' => $this->shortenStr($post['body']),
                 'createdAt' => $this->formatDate($post['created_at']),
-                'author' => $post['author_name']
+                'author' => $post['author_name'],
+                'editable' => false
             ];
             $allPosts .= View::show('postCard', $params, true);
         }

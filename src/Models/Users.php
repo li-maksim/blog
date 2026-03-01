@@ -28,8 +28,8 @@ class Users extends Model {
         }
     }
 
+    // returns true or false, the AuthController authorizes user if true
     public function login(string $email, string $password): array | false {
-        // returns true or false, the AuthController authorizes user if true
         if (!$this->checkIfXExists('email', $email)) {
             throw new AuthException("There's no user with this username or email");
         }

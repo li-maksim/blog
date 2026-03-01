@@ -50,7 +50,6 @@ abstract class Model {
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($values);
-            // echo $sql;
         } catch(\PDOException $e) {
             throw new \Exception("Database error: " . $e->getMessage());
         }
@@ -69,7 +68,7 @@ abstract class Model {
             throw new \Exception("Database error: " . $e->getMessage());
         }
     }
-
+    
     protected function getAllByUserId(string | int $id): array {
         $tableName = static::TABLE_NAME;
         $sql = "SELECT * FROM $tableName WHERE author_id = ?";

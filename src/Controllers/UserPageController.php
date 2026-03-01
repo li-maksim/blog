@@ -36,10 +36,12 @@ class UserPageController extends Controller {
     }
 
     public function renderUserPage() {
+        // Redirecting to /my_page if the user's id is matching the logged in user's id
         if (!empty($_SESSION['account_name']) && $_GET['name'] === $_SESSION['account_name']) {
             header("Location: /my_page");
             exit;
         }
+        
         $posts = $this->postsModel->getPostsByUsername($_GET['name']);
         $comments = $this->commentsModel->getCommentsByUsername($_GET['name']);
         $params = [
@@ -56,6 +58,11 @@ class UserPageController extends Controller {
         $posts = $this->postsModel->getPostsByUsername($username);
 
         $allPosts = '';
+        $editable = false;
+
+        if (!empty($posts[0]['author_id']) && !empty($_SESSION['account_id']) && $posts[0]['author_id'] === $_SESSION['account_id']) {
+            $editable = true;
+        }
 
         foreach($posts as $post) {
             $params = [
@@ -63,7 +70,8 @@ class UserPageController extends Controller {
                 'title' => $post['title'],
                 'body' => $this->shortenStr($post['body']),
                 'createdAt' => $this->formatDate($post['created_at']),
-                'author' => $post['author_name']
+                'author' => $post['author_name'],
+                'editable' => $editable
             ];
             $allPosts .= View::show('postCard', $params, true);
         }
@@ -76,13 +84,19 @@ class UserPageController extends Controller {
         $comments = $this->commentsModel->getCommentsByUsername($username);
 
         $allComments = '';
+        $isAuthor = false;
+
+        if (!empty($comments[0]['author_id']) && !empty($_SESSION['account_id']) && $comments[0]['author_id'] === $_SESSION['account_id']) {
+            $isAuthor = true;
+        }
 
         foreach($comments as $comment) {
             $params = [
                 'createdAt' => $this->formatDate($comment['created_at']),
                 'body' => $comment['body'],
                 'postId' => $comment['post_id'],
-                'commentId' => $comment['id']
+                'commentId' => $comment['id'],
+                'isAuthor' => $isAuthor
             ];
             $allComments .= View::show('commentCard', $params, true);
         }

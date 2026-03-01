@@ -17,17 +17,21 @@ class AuthController extends Controller {
     }
 
     public function renderLogin() {
+        // The data from previous login attempts
         $error = $_SESSION['flash_error'] ?? null;
         $email = $_SESSION['old_email'] ?? null;
         unset($_SESSION['flash_error'], $_SESSION['old_email']);
+
         return $this->renderView('login', ['error' => $error, 'email' => $email]);
     }
 
     public function renderSignUp() {
+        // The data from previous sign up attempts
         $error = $_SESSION['flash_error'] ?? null;
         $username = $_SESSION['old_username'] ?? null;
         $email = $_SESSION['old_email'] ?? null;
         unset($_SESSION['flash_error'], $_SESSION['old_username'], $_SESSION['old_email']);
+
         return $this->renderView('signup', ['error' => $error, 'username' => $username, 'email' => $email]);
     }
 
@@ -65,8 +69,12 @@ class AuthController extends Controller {
     }
 
     public function login() {
-        if (!isset($_POST['email'], $_POST['password'])) {
-            throw new \Exception('Please fill out all fields');
+        // Confirming that there are no empty fields
+        if ($_POST['email'] == '' || $_POST['password'] == '') {
+            $_SESSION['flash_error'] = "Please fill out all the required fields";
+            $_SESSION['old_email'] = $_POST['email'] ?? '';
+            header('Location: /login');
+            exit;
         }
 
         $email = $_POST['email'];
@@ -74,6 +82,7 @@ class AuthController extends Controller {
 
         try {
 
+            // this method checks if the email and the password are correct
             $userData = $this->usersModel->login($email, $password);
 
             if ($userData) {
@@ -96,7 +105,7 @@ class AuthController extends Controller {
         }
     }
 
-        public function logout(): void {
+    public function logout(): void {
         $_SESSION= [];
 
         if (ini_get("session.use_cookies")) {
