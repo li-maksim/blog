@@ -33,7 +33,7 @@ class PostController extends Controller {
 
     public function renderCreatePage() {
         if ($_SESSION['account_loggedin'] ?? false) {
-            return $this->renderView('post/create', ['btnText' => 'Create']);
+            return $this->renderView('post/create', ['edit' => false]);
         } else {
             return $this->renderView('404');
         }
@@ -111,7 +111,11 @@ class PostController extends Controller {
             return $this->renderView('404');
         }
 
-        return $this->renderView('post/create', ['oldTitle' => $post['title'], 'oldBody' => htmlspecialchars($post['body']), 'btnText' => 'Edit']);
+        return $this->renderView('post/create', [
+            'oldTitle' => $post['title'], 
+            'oldBody' => htmlspecialchars($post['body']), 
+            'edit' => true
+        ]);
     }
 
     public function updatePost() {
