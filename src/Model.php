@@ -71,7 +71,7 @@ abstract class Model {
     
     protected function getAllByUserId(string | int $id): array {
         $tableName = static::TABLE_NAME;
-        $sql = "SELECT * FROM $tableName WHERE author_id = ?";
+        $sql = "SELECT * FROM $tableName WHERE author_id = ? ORDER BY $tableName.created_at DESC";
         return $this->executeSql($sql, [$id])->fetchAll();
     }
 
@@ -82,7 +82,8 @@ abstract class Model {
                     users.username AS author_name 
                 FROM $tableName 
                 JOIN users ON $tableName.author_id = users.id 
-                WHERE users.username = ?";
+                WHERE users.username = ?
+                ORDER BY $tableName.created_at DESC";
         return $this->executeSql($sql, [$username])->fetchAll();
     }
 }

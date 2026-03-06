@@ -7,6 +7,7 @@ use App\Controller;
 use App\Models\Users;
 use App\Models\Posts;
 use App\Models\Comments;
+use App\Exceptions\ThisUserDoesntExist;
 
 class UserPageController extends Controller {
     private Users $usersModel;
@@ -19,15 +20,47 @@ class UserPageController extends Controller {
         $this->commentsModel = new Comments();
     }
 
+    // To do: refactor to not repeat this code
     public function renderMyPage() {
         if ($this->checkIfLoggedin()) {
+            $name = $_SESSION['account_name'];
+            $user = $this->usersModel->getUserByName($name);
+
             $posts = $this->postsModel->getPostsByUserId($_SESSION['account_id']);
+            $allPosts = '';
+            foreach($posts as $post) {
+                $params = [
+                    'id' => $post['id'],
+                    'title' => $post['title'],
+                    'body' => $this->shortenStr($post['body']),
+                    'createdAt' => $this->formatDate($post['created_at']),
+                    'author' => $name,
+                    'editable' => true
+                ];
+                $allPosts .= View::show('postCard', $params, true);
+            }
+
             $comments = $this->commentsModel->getCommentsByUserId($_SESSION['account_id']);
+            $allComments = '';
+            foreach($comments as $comment) {
+                $params = [
+                    'createdAt' => $this->formatDate($comment['created_at']),
+                    'body' => $comment['body'],
+                    'postId' => $comment['post_id'],
+                    'commentId' => $comment['id'],
+                    'isAuthor' => true
+                ];
+                $allComments .= View::show('commentCard', $params, true);
+            }
+
             $params = [
                 'myPage' => true,
-                'username' => $_SESSION['account_name'],
+                'username' => $name,
+                'email' => $user['email'],
                 'postsNum' => count($posts),
-                'commentsNum' => count($comments)
+                'commentsNum' => count($comments),
+                'allPosts' => $allPosts,
+                'allComments' => $allComments
             ];
             return $this->renderView('user', $params);
         } else {
@@ -36,21 +69,55 @@ class UserPageController extends Controller {
     }
 
     public function renderUserPage() {
+        $name = $_GET['name'];
         // Redirecting to /my_page if the user's id is matching the logged in user's id
-        if (!empty($_SESSION['account_name']) && $_GET['name'] === $_SESSION['account_name']) {
+        if (!empty($_SESSION['account_name']) && $name === $_SESSION['account_name']) {
             header("Location: /my_page");
             exit;
         }
-        
-        $posts = $this->postsModel->getPostsByUsername($_GET['name']);
-        $comments = $this->commentsModel->getCommentsByUsername($_GET['name']);
-        $params = [
-            'myPage' => false,
-            'username' => $_GET['name'],
-            'postsNum' => count($posts),
-            'commentsNum' => count($comments)
-        ];
-        return $this->renderView('user', $params);
+        try {
+            $user = $this->usersModel->getUserByName($name);
+            $posts = $this->postsModel->getPostsByUsername($name);
+
+            $allPosts = '';
+
+            foreach($posts as $post) {
+                $params = [
+                    'id' => $post['id'],
+                    'title' => $post['title'],
+                    'body' => $this->shortenStr($post['body']),
+                    'createdAt' => $this->formatDate($post['created_at']),
+                    'author' => $name,
+                    'editable' => false
+                ];
+                $allPosts .= View::show('postCard', $params, true);
+            }
+
+            $comments = $this->commentsModel->getCommentsByUsername($name);
+            $allComments = '';
+            foreach($comments as $comment) {
+                $params = [
+                    'createdAt' => $this->formatDate($comment['created_at']),
+                    'body' => $comment['body'],
+                    'postId' => $comment['post_id'],
+                    'commentId' => $comment['id'],
+                    'isAuthor' => false
+                ];
+                $allComments .= View::show('commentCard', $params, true);
+            }
+
+            $params = [
+                'myPage' => false,
+                'username' => $name,
+                'postsNum' => count($posts),
+                'commentsNum' => count($comments),
+                'allPosts' => $allPosts,
+                'allComments' => $allComments
+            ];
+            return $this->renderView('user', $params);
+        } catch (ThisUserDoesntExist $e) {
+            return $this->renderView('404');
+        }
     }
 
     public function renderUserPosts() {

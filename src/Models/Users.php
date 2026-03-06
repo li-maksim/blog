@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Model;
 use App\Exceptions\ThisUserExists;
 use App\Exceptions\AuthException;
+use App\Exceptions\ThisUserDoesntExist;
 
 class Users extends Model {
 
@@ -31,7 +32,7 @@ class Users extends Model {
     // returns true or false, the AuthController authorizes user if true
     public function login(string $email, string $password): array | false {
         if (!$this->checkIfXExists('email', $email)) {
-            throw new AuthException("There's no user with this username or email");
+            throw new AuthException("There's no user with this email");
         }
 
         $tableName = static::TABLE_NAME;
@@ -47,6 +48,15 @@ class Users extends Model {
             return $data;
         } else {
             return false;
+        }
+    }
+
+    public function getUserByName($name): array {
+        if (!$this->checkIfXExists('username', $name)) {
+            throw new ThisUserDoesntExist("There's no user with this name");
+        } else {
+            $sql = "SELECT * FROM users WHERE username = ?";
+            return $this->executeSql($sql, [$name])->fetch();
         }
     }
 

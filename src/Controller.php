@@ -15,11 +15,11 @@ abstract class Controller {
             return false;
         }
         $dateTime = new \DateTime($date);
-        return date_format($dateTime, 'd-m-Y, H:i');
+        return date_format($dateTime, 'd.m.Y, H:i');
     }
 
     protected function checkIfLoggedin() {
-        if (!$_SESSION['account_loggedin'] ?? false) {
+        if (empty($_SESSION['account_loggedin'])) {
             return false;
         } else {
             return true;
@@ -28,7 +28,7 @@ abstract class Controller {
 
     protected function shortenStr(string $str): string {
         if (strlen($str) > 250) {
-            return substr($str, 0, 250) . '...';
+            return trim(substr($str, 0, 250)) . '...';
         } else {
             return $str;
         }

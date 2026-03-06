@@ -1,35 +1,23 @@
-<form method="post" class="w-25 m-0 m-auto">
-  <!-- Email input -->
-  <div data-mdb-input-init class="form-outline mb-4">
-    <input type="email" id="form2Example1" class="form-control" name="email" value="<?= htmlspecialchars($email ?? '') ?>"/>
-    <label class="form-label" for="form2Example1">Email</label>
-  </div>
+<form method="post" class="w-25 m-0 m-auto mt-5">
+    <h1 class="text-center mb-5">Log In</h2>
 
-  <!-- Password input -->
-  <div data-mdb-input-init class="form-outline mb-4">
-    <input type="password" id="form2Example2" class="form-control" name="password" />
-    <label class="form-label" for="form2Example2">Password</label>
-  </div>
+    <div class="form-outline mb-3">
+        <input type="email" id="form2Example1" class="form-control" name="email" placeholder="Email" data-bs-toggle="tooltip" data-bs-placement="right" title="Email" required value="<?= htmlspecialchars($email ?? '') ?>" />
+    </div>
 
-  <?php if ($error) echo "<p class='text-danger'>$error</p"; ?>
+    <div class="form-outline mb-5">
+        <input type="password" id="form2Example2" class="form-control" name="password" placeholder="Password" data-bs-toggle="tooltip" data-bs-placement="right" title="Password" required />
+    </div>
 
-  <!-- Submit button -->
-  <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Log in</button>
+    <?php if ($error): ?>
+        <p class="text-danger text-center"><?= htmlspecialchars($error) ?></p>
+    <?php endif; ?>
 
-  <!-- Register buttons -->
-  <div class="text-center">
-    <p>Not a member? <a href="/signup">Register</a></p>
+    <div class="d-flex justify-content-center mb-3">
+        <button type="submit" class="btn btn-primary ps-5 pe-5">Log in</button>
+    </div>
 
-    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-      <i class="fab fa-google"></i>
-    </button>
-
-    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-      <i class="fab fa-twitter"></i>
-    </button>
-
-    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
-      <i class="fab fa-github"></i>
-    </button>
-  </div>
+    <div class="text-center">
+        <p>Not a member? <a href="/signup" class="link-primary text-decoration-none">Register</a></p>
+    </div>
 </form>
