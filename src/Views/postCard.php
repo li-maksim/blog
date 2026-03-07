@@ -1,7 +1,11 @@
 <div class="card mb-4">
     <div class="card-body text-left">
         <div class="d-flex justify-content-between align-items-start">
-            <h2 class="card-title mb-3"><?= $title ?></h2>
+            <h2 class="mb-3">
+                <a href="<?= "/post?id=$id" ?>" class="card-title text-decoration-none">
+                    <?= $title ?>
+                </a>
+            </h2>
             <?php if ($editable): ?>
                 <div class="d-flex align-items-start gap-3 mt-2">
                     <a href="<?= "/post/edit?id=$id" ?>" class="text-primary text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit">

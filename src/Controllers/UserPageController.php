@@ -44,9 +44,11 @@ class UserPageController extends Controller {
         $comments = $this->commentsModel->getCommentsByUserId($user['id']);
         $allComments = '';
         foreach($comments as $comment) {
+            $postTitle = $this->postsModel->getPostById($comment['post_id'])['title'];
             $params = [
                 'createdAt' => $this->formatDate($comment['created_at']),
                 'body' => $comment['body'],
+                'postTitle' => $postTitle,
                 'postId' => $comment['post_id'],
                 'commentId' => $comment['id'],
                 'isAuthor' => $isMyPage
@@ -77,50 +79,6 @@ class UserPageController extends Controller {
         }
         $name = $_SESSION['account_name'];
         return $this->renderUserPage(true, $name);
-        // if ($this->checkIfLoggedin()) {
-        //     $name = $_SESSION['account_name'];
-        //     $user = $this->usersModel->getUserByName($name);
-
-        //     $posts = $this->postsModel->getPostsByUserId($_SESSION['account_id']);
-        //     $allPosts = '';
-        //     foreach($posts as $post) {
-        //         $params = [
-        //             'id' => $post['id'],
-        //             'title' => $post['title'],
-        //             'body' => $this->shortenStr($post['body']),
-        //             'createdAt' => $this->formatDate($post['created_at']),
-        //             'author' => $name,
-        //             'editable' => true
-        //         ];
-        //         $allPosts .= View::show('postCard', $params, true);
-        //     }
-
-        //     $comments = $this->commentsModel->getCommentsByUserId($_SESSION['account_id']);
-        //     $allComments = '';
-        //     foreach($comments as $comment) {
-        //         $params = [
-        //             'createdAt' => $this->formatDate($comment['created_at']),
-        //             'body' => $comment['body'],
-        //             'postId' => $comment['post_id'],
-        //             'commentId' => $comment['id'],
-        //             'isAuthor' => true
-        //         ];
-        //         $allComments .= View::show('commentCard', $params, true);
-        //     }
-
-        //     $params = [
-        //         'myPage' => true,
-        //         'username' => $name,
-        //         'email' => $user['email'],
-        //         'postsNum' => count($posts),
-        //         'commentsNum' => count($comments),
-        //         'allPosts' => $allPosts,
-        //         'allComments' => $allComments
-        //     ];
-        //     return $this->renderView('user', $params);
-        // } else {
-        //     return $this->renderView('404');
-        // }
     }
 
     public function renderOtherUsersPage() {
@@ -131,49 +89,6 @@ class UserPageController extends Controller {
             exit;
         }
         return $this->renderUserPage(false, $name);
-        // try {
-        //     $user = $this->usersModel->getUserByName($name);
-        //     $posts = $this->postsModel->getPostsByUsername($name);
-
-        //     $allPosts = '';
-
-        //     foreach($posts as $post) {
-        //         $params = [
-        //             'id' => $post['id'],
-        //             'title' => $post['title'],
-        //             'body' => $this->shortenStr($post['body']),
-        //             'createdAt' => $this->formatDate($post['created_at']),
-        //             'author' => $name,
-        //             'editable' => false
-        //         ];
-        //         $allPosts .= View::show('postCard', $params, true);
-        //     }
-
-        //     $comments = $this->commentsModel->getCommentsByUsername($name);
-        //     $allComments = '';
-        //     foreach($comments as $comment) {
-        //         $params = [
-        //             'createdAt' => $this->formatDate($comment['created_at']),
-        //             'body' => $comment['body'],
-        //             'postId' => $comment['post_id'],
-        //             'commentId' => $comment['id'],
-        //             'isAuthor' => false
-        //         ];
-        //         $allComments .= View::show('commentCard', $params, true);
-        //     }
-
-        //     $params = [
-        //         'myPage' => false,
-        //         'username' => $name,
-        //         'postsNum' => count($posts),
-        //         'commentsNum' => count($comments),
-        //         'allPosts' => $allPosts,
-        //         'allComments' => $allComments
-        //     ];
-        //     return $this->renderView('user', $params);
-        // } catch (ThisUserDoesntExist $e) {
-        //     return $this->renderView('404');
-        // }
     }
 
     public function renderUserPosts() {
@@ -214,9 +129,11 @@ class UserPageController extends Controller {
         }
 
         foreach($comments as $comment) {
+            $postTitle = $this->postsModel->getPostById($comment['post_id'])['title'];
             $params = [
                 'createdAt' => $this->formatDate($comment['created_at']),
                 'body' => $comment['body'],
+                'postTitle' => $postTitle,
                 'postId' => $comment['post_id'],
                 'commentId' => $comment['id'],
                 'isAuthor' => $isAuthor

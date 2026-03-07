@@ -1,7 +1,7 @@
 <div class="card mb-3">
     <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <p class="text-muted mb-0">On <?= $createdAt ?></p>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="<?= '/post?id=' . $postId ?>" class="btn btn-link ps-0"><?= $postTitle ?></a>
             <?php if ($isAuthor): ?>
                 <a href=<?="/comment/delete?id=$commentId"?> class="text-primary text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -11,7 +11,7 @@
                 </a>
             <?php endif; ?>
         </div>
+        <p class="text-muted mb-2 fz-14">On <?= $createdAt ?></p> 
         <div class="mb-2"><?= $body ?></div>
-        <a href="<?= '/post?id=' . $postId ?>" class="btn btn-link ps-0">Full post</a>
     </div>
 </div>
