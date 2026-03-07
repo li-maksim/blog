@@ -2,12 +2,15 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv->load();
+
 define('CONFIG', [
-    'host'     => getenv('DB_HOST'),
-    'user'     => getenv('DB_USER'),
-    'pass'     => getenv('DB_PASS'),
-    'database' => getenv('DB_DATABASE'),
-    'driver'   => getenv('DB_DRIVER'),
+    'host'     => $_ENV['DB_HOST'],
+    'user'     => $_ENV['DB_USER'],
+    'pass'     => $_ENV['DB_PASS'],
+    'database' => $_ENV['DB_DATABASE'],
+    'driver'   => $_ENV['DB_DRIVER'],
 ]);
 
 define('VIEW_PATH', __DIR__ . '/../src/Views');
