@@ -15,8 +15,12 @@ class HomeController extends Controller {
     }
 
     public function render() {
-        $postsData = $this->postsModel->getAllPosts();
-        
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $limit = 5;
+
+        $postsData = $this->postsModel->getAllPosts($currentPage, $limit);
+        $totalPosts = $this->postsModel->getAmountOfPosts();
+        $totalPages = ceil($totalPosts / $limit);
         $allPosts = '';
         
         foreach($postsData as $post) {
@@ -31,6 +35,8 @@ class HomeController extends Controller {
             $allPosts .= View::show('postCard', $params, true);
         }
 
-        return $this->renderView('home', ['allPosts' => $allPosts]);
+        $paginationLinks = $this->generatePaginationLinks($currentPage, $totalPages);
+
+        return $this->renderView('home', ['allPosts' => $allPosts, 'paginationLinks' => $paginationLinks]);
     }
 }

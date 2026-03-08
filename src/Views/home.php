@@ -4,3 +4,6 @@
 <?php else: ?>
     <p  class="alert alert-info text-center">There are no posts yet. You can create the first one!</p>
 <?php endif; ?>
+<nav>
+    <?= $paginationLinks ?>
+</nav>

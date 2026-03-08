@@ -9,15 +9,23 @@ class Posts extends Model {
 
     protected const TABLE_NAME = 'posts';
 
-    public function getAllPosts(): array {
+    public function getAllPosts(int $page = 1, int $limit = 5): array {
+        $offset = ($page - 1) * $limit;
+
         $sql = "SELECT 
                     posts.*,
                     users.username AS author_name
                 FROM posts
                 JOIN users on posts.author_id = users.id
-                ORDER BY posts.created_at DESC";
+                ORDER BY posts.created_at DESC
+                LIMIT ? OFFSET ?";
 
-        return $this->executeSql($sql)->fetchAll();
+        return $this->executeSql($sql, [$limit, $offset])->fetchAll();
+    }
+
+    public function getAmountOfPosts(): int {
+        $sql = "SELECT COUNT(*) FROM posts";
+        return (int) $this->executeSql($sql)->fetchColumn();
     }
 
     public function getPostById(string $id): array | false {
