@@ -9,7 +9,7 @@ class Posts extends Model {
 
     protected const TABLE_NAME = 'posts';
 
-    public function getAllPosts(int $page = 1, int $limit = 5): array {
+    public function getAllPosts(int $page = 1, int $limit = PAGE_LIMIT): array {
         $offset = ($page - 1) * $limit;
 
         $sql = "SELECT 
@@ -47,9 +47,14 @@ class Posts extends Model {
         return $this->getAllByUserId($id);
     }
 
-    public function getPostsByUsername(string $username): array {
-        return $this->getAllByUsername($username);
+    public function getPostsByUsername(string $username, $currentPage = 1, $limit = PAGE_LIMIT): array {
+        return $this->getAllByUsername($username, $currentPage, $limit);
     }
+
+    public function getAmountOfPostsByUsername(string $username): int {
+        return $this->getAmountByUsername($username);
+    }
+
 
     public function createNewPost(string $title, string $body, string $authorId): void {
         $this->insertInto(['title', 'body', 'author_id'], [$title, $body, $authorId]);

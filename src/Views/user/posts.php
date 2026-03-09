@@ -1,8 +1,8 @@
 <h1 class="text-center mb-5"><?= $username . "'s Posts" ?></h1>
-<?php if (!empty($allPosts)): ?> 
+<?php if (!empty($contentHtml)): ?> 
     <div class="container">
         <div class="d-flex flex-column gap-3">
-            <?= $allPosts ?>
+            <?= $contentHtml ?>
         </div>
     </div>
 <?php else: ?>
@@ -10,3 +10,6 @@
         There are no posts yet.
     </div>
 <?php endif; ?>
+<nav>
+    <?= $paginationLinks ?>
+</nav>

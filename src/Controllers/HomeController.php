@@ -16,7 +16,7 @@ class HomeController extends Controller {
 
     public function render() {
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $limit = 5;
+        $limit = PAGE_LIMIT;
 
         $postsData = $this->postsModel->getAllPosts($currentPage, $limit);
         $totalPosts = $this->postsModel->getAmountOfPosts();

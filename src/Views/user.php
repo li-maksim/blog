@@ -16,9 +16,6 @@
     <div class="row">
         <div class="col-md-6">
             <h2 class="text-center mb-5">Posts</h2>
-            <?php if ($postsNum > 0): ?>
-                <p class="text-center"><?= $postsNum ?> <a href="<?= '/user/posts?name=' . $username ?>" class="text-decoration-none">posts</a></p>
-            <?php endif; ?>
             <?php if (!empty($allPosts)): ?> 
                 <div class="container">
                     <div class="d-flex flex-column gap-3">
@@ -30,13 +27,15 @@
                     There are no posts yet.
                 </div>
             <?php endif; ?>
+            <?php if ($postsNum > PAGE_LIMIT): ?>
+                <div class="d-flex justify-content-center">
+                    <a href="<?= '/user/posts?name=' . $username ?>" class="text-decoration-none text-center">All<?= " $postsNum " ?>posts</a>
+                </div>
+            <?php endif; ?>
         </div>
         
         <div class="col-md-6">
             <h2 class="text-center mb-5">Comments</h2>
-            <?php if ($commentsNum > 0): ?>
-                <p class="text-center"><?= $commentsNum ?> <a href="<?= '/user/comments?name=' . $username ?>" class="text-decoration-none">comments</a></p>
-            <?php endif; ?>
             <?php if (!empty($allComments)): ?> 
                 <div class="container">
                     <div class="d-flex flex-column gap-3">
@@ -46,6 +45,11 @@
             <?php else: ?>
                 <div class="alert alert-info text-center">
                     There are no comments yet.
+                </div>
+            <?php endif; ?>
+            <?php if ($commentsNum > PAGE_LIMIT): ?>
+                <div class="d-flex justify-content-center">
+                    <a href="<?= '/user/posts?name=' . $username ?>" class="text-decoration-none text-center">All<?= " $commentsNum " ?>comments</a>
                 </div>
             <?php endif; ?>
         </div>

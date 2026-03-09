@@ -15,6 +15,8 @@ define('CONFIG', [
 
 define('VIEW_PATH', __DIR__ . '/../src/Views');
 
+define('PAGE_LIMIT', 5);
+
 use App\App;
 use App\Router;
 use App\Controllers\HomeController;

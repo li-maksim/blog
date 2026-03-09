@@ -25,8 +25,12 @@ class Comments extends Model {
         return $this->getAllByUserId($id);
     }
 
-        public function getCommentsByUsername(string $username): array {
-        return $this->getAllByUsername($username);
+    public function getCommentsByUsername(string $username, $currentPage = 1, $limit = PAGE_LIMIT): array {
+        return $this->getAllByUsername($username, $currentPage, $limit);
+    }
+
+    public function getAmountOfCommentsByUsername(string $username): int {
+        return $this->getAmountByUsername($username);
     }
 
     public function getCommentById($id): array {
