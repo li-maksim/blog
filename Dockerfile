@@ -9,7 +9,9 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     && docker-php-ext-install pdo_mysql mysqli mbstring zip \
     && a2enmod rewrite \
-    && rm -rf /var/lib/apt/lists/*  # ← Critical: reduce image size
+    && a2dismod mpm_worker \
+    && a2enmod mpm_prefork \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -20,6 +22,7 @@ COPY composer.json composer.lock* ./
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 COPY . .
+COPY .env .env
 
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf && \
     sed -i 's|<Directory /var/www/html>|<Directory /var/www/html/public>|g' /etc/apache2/sites-available/000-default.conf
