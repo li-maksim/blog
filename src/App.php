@@ -17,6 +17,9 @@ class App {
             http_response_code(404);
 
             echo View::show('404');
+        } catch (\Exception $e) {
+            $msg = $e->getMessage();
+            echo "<p>Sorry, internal error: <br> $msg</p>";
         }
     }
 }

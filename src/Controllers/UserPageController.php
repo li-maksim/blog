@@ -39,7 +39,8 @@ class UserPageController extends Controller {
                 'body' => $this->shortenStr($post['body']),
                 'createdAt' => $this->formatDate($post['created_at']),
                 'author' => $name,
-                'editable' => $isMyPage
+                'editable' => $isMyPage,
+                'deletable' => ($isMyPage || $this->checkIfAdmin())
             ];
             $allPosts .= View::show('postCard', $params, true);
         }
@@ -88,14 +89,19 @@ class UserPageController extends Controller {
         $content = [];
         $contentHtml = '';
         $totalAmount = 0;
+
+        function verifyAuthor(): bool {
+            return (!empty($content[0]['author_id']) 
+                    && !empty($_SESSION['account_id']) 
+                    && $content[0]['author_id'] === $_SESSION['account_id']);
+        }
+
         if ($type === 'posts') {
             $content = $this->postsModel->getPostsByUsername($username, $currentPage, $limit);
             $totalAmount = $this->postsModel->getAmountByUsername($username);
             $editable = false;
 
-            if (!empty($content[0]['author_id']) && !empty($_SESSION['account_id']) && $content[0]['author_id'] === $_SESSION['account_id']) {
-                $editable = true;
-            }
+            verifyAuthor() ? $editable = true : $editable = false;
 
             foreach($content as $post) {
             $params = [
@@ -104,7 +110,8 @@ class UserPageController extends Controller {
                 'body' => $this->shortenStr($post['body']),
                 'createdAt' => $this->formatDate($post['created_at']),
                 'author' => $post['author_name'],
-                'editable' => $editable
+                'editable' => $editable,
+                'deletable' => ($editable || $this->checkIfAdmin())
             ];
             $contentHtml .= View::show('postCard', $params, true);
             }
@@ -113,9 +120,7 @@ class UserPageController extends Controller {
             $totalAmount = $this->commentsModel->getAmountByUsername($username);
             $isAuthor = false;
 
-            if (!empty($content[0]['author_id']) && !empty($_SESSION['account_id']) && $content[0]['author_id'] === $_SESSION['account_id']) {
-                $isAuthor = true;
-            }
+            verifyAuthor() ? $editable = true : $editable = false;
 
             foreach($content as $comment) {
                 $postTitle = $this->postsModel->getPostById($comment['post_id'])['title'];

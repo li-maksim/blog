@@ -48,8 +48,6 @@ class PostController extends Controller {
             return $this->renderView('404');
         }
 
-        $editable = $this->verifyAuthor();
-
         $comments = $this->commentsModel->getCommentsByPostId($id) ?? '';
         $allComments = '';
         if ($comments) {
@@ -64,7 +62,7 @@ class PostController extends Controller {
                     'body' => nl2br(htmlspecialchars($comment['body'])),
                     'createdAt' => $this->formatDate($comment['created_at']),
                     'author' => $comment['author_name'],
-                    'isAuthor' => $isAuthor,
+                    'isAuthor' => ($isAuthor || $this->checkIfAdmin()),
                     'commentId' => $comment['id']
                 ];
                 $allComments .= View::show('comment', $params, true);
@@ -78,7 +76,8 @@ class PostController extends Controller {
             'updatedAt' => $this->formatDate($post['updated_at']),
             'author' => $post['author_name'],
             'id' => $post['id'],
-            'editable' => $editable,
+            'editable' => $this->verifyAuthor(),
+            'deletable' => ($this->verifyAuthor() || $this->checkIfAdmin()),
             'allComments' => $allComments
         ]; 
 
@@ -138,7 +137,7 @@ class PostController extends Controller {
     }
 
     public function deletePost() {
-        if (!$this->verifyAuthor()) {
+        if (!$this->verifyAuthor() && !$this->checkIfAdmin()) {
             return View::show('404');
         }
 

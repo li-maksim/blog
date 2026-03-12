@@ -1,5 +1,10 @@
 <?php
 
+// admin
+$password = password_hash('admin', PASSWORD_DEFAULT);
+$stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+$stmt->execute(['admin', 'admin@email.com', $password]);
+
 // test user #1
 $password = password_hash('1234', PASSWORD_DEFAULT);
 $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");

@@ -82,4 +82,8 @@ abstract class Controller {
             return $links;
         }
     }
+
+    protected function checkIfAdmin(): bool {
+        return !empty($_SESSION['account_name']) ? $_SESSION['account_name'] === 'admin' : false;
+    }
 }

@@ -15,7 +15,8 @@ class CommentController extends Controller {
     public function deleteComment() {
         $commentId = $_GET['id'];
         $comment = $this->commentsModel->getCommentById($commentId);
-        if (!empty($_SESSION['account_id']) && $_SESSION['account_id'] === $comment['author_id']) {
+        if ((!empty($_SESSION['account_id']) && $_SESSION['account_id'] === $comment['author_id'])
+            || $this->checkIfAdmin()) {
             $this->commentsModel->deleteCommentById($commentId);
             header("Location: /");
             exit;
