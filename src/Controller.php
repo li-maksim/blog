@@ -36,7 +36,7 @@ abstract class Controller {
 
     protected function generatePaginationLinks($currentPage, $totalPages, $href = '?page=') {
         if ($totalPages > 1) {
-            $links = '<ul class="pagination justify-content-center">';
+            $links = '<ul class="pagination justify-content-center mt-3">';
             $maxLinksToShow = 5;
             
             // 'Previous' button

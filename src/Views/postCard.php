@@ -1,4 +1,4 @@
-<div class="card w-100 mb-4">
+<div class="card w-100">
     <div class="card-body text-left">
         <div class="d-flex justify-content-between align-items-start">
             <h2 class="mb-3">
