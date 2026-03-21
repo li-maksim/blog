@@ -4,7 +4,7 @@ services:
   blog:
     build: .
     ports:
-      - "9000:80"
+      - "80:80"
     volumes:
       - .:/var/www/html
     environment:
