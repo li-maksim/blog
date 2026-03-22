@@ -4,9 +4,10 @@ declare(strict_types = 1);
 namespace App\Models;
 
 use App\Model;
+use App\Models\Traits\GetByUser;
 
 class Comments extends Model {
-
+    use GetByUser;
     protected const TABLE_NAME = 'comments';
 
     public function getCommentsByPostId(string $id): array {
@@ -25,7 +26,7 @@ class Comments extends Model {
         return $this->getAllByUserId($id);
     }
 
-    public function getCommentsByUsername(string $username, $currentPage = 1, $limit = PAGE_LIMIT): array {
+    public function getCommentsByUsername(string $username, int $currentPage = 1, int $limit = PAGE_LIMIT): array {
         return $this->getAllByUsername($username, $currentPage, $limit);
     }
 
@@ -33,7 +34,7 @@ class Comments extends Model {
         return $this->getAmountByUsername($username);
     }
 
-    public function getCommentById($id): array {
+    public function getCommentById(string | int $id): array {
         $sql = "SELECT * FROM comments WHERE id = ?";
         return $this->executeSql($sql, [$id])->fetch();
     }
@@ -42,7 +43,7 @@ class Comments extends Model {
         $this->insertInto(['post_id', 'author_id', 'body'], [$postId, $authorId, $body]);
     }
 
-    public function deleteCommentById($id): void {
+    public function deleteCommentById(string | int $id): void {
         $sql = "DELETE FROM comments WHERE id = ?";
         $this->executeSql($sql, [$id]);
     }

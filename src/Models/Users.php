@@ -50,7 +50,7 @@ class Users extends Model {
         }
     }
 
-    public function getUserByName($name): array {
+    public function getUserByName(string $name): array {
         if (!$this->checkIfXExists('username', $name)) {
             throw new ThisUserDoesntExist("There's no user with this name");
         } else {

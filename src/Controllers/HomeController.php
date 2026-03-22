@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types = 1);
 namespace App\Controllers;
 
 use App\View;
 use App\Controller;
 use App\Models\Posts;
+use App\Controllers\Traits\PaginationTrait;
+use App\Controllers\Traits\ShortenStr;
+use App\Controllers\Traits\FormatDate;
 
 class HomeController extends Controller {
-
+    use PaginationTrait;
+    use ShortenStr;
+    use FormatDate;
     private Posts $postsModel;
 
     public function __construct() {

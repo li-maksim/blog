@@ -4,9 +4,10 @@ declare(strict_types = 1);
 namespace App\Models;
 
 use App\Model;
+use App\Models\Traits\GetByUser;
 
 class Posts extends Model {
-
+    use GetByUser;
     protected const TABLE_NAME = 'posts';
 
     public function getAllPosts(int $page = 1, int $limit = PAGE_LIMIT): array {
@@ -28,7 +29,7 @@ class Posts extends Model {
         return (int) $this->executeSql($sql)->fetchColumn();
     }
 
-    public function getPostById(string $id): array | false {
+    public function getPostById(string | int $id): array | false {
 
         if (!$this->checkIfXExists('id', $id)) {
             return false;
@@ -47,7 +48,7 @@ class Posts extends Model {
         return $this->getAllByUserId($id);
     }
 
-    public function getPostsByUsername(string $username, $currentPage = 1, $limit = PAGE_LIMIT): array {
+    public function getPostsByUsername(string $username, int $currentPage = 1, int $limit = PAGE_LIMIT): array {
         return $this->getAllByUsername($username, $currentPage, $limit);
     }
 

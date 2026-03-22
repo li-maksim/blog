@@ -7,9 +7,10 @@ use App\View;
 use App\Controller;
 use App\Models\Posts;
 use App\Models\Comments;
+use App\Controllers\Traits\FormatDate;
 
 class PostController extends Controller {
-
+    use FormatDate;
     private Posts $postsModel;
     private Comments $commentsModel;
 

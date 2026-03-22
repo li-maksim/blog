@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types = 1);
 namespace App\Controllers;
 
 use App\View;
@@ -8,8 +9,14 @@ use App\Models\Users;
 use App\Models\Posts;
 use App\Models\Comments;
 use App\Exceptions\ThisUserDoesntExist;
+use App\Controllers\Traits\PaginationTrait;
+use App\Controllers\Traits\ShortenStr;
+use App\Controllers\Traits\FormatDate;
 
 class UserPageController extends Controller {
+    use PaginationTrait;
+    use ShortenStr;
+    use FormatDate;
     private Users $usersModel;
     private Posts $postsModel;
     private Comments $commentsModel;
@@ -18,6 +25,14 @@ class UserPageController extends Controller {
         $this->usersModel = new Users();
         $this->postsModel = new Posts();
         $this->commentsModel = new Comments();
+    }
+
+    private function checkIfLoggedin(): bool {
+        if (empty($_SESSION['account_loggedin'])) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     // Shared logic between rendering /my_page and other users' pages
