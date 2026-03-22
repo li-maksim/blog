@@ -69,7 +69,7 @@ class Posts extends Model {
         $this->executeSql($sql, $vals);
     }
 
-    public function deletePost(string $id) {
+    public function deletePost(string $id): void {
         $sql = "DELETE FROM posts WHERE id = ?";
         $this->executeSql($sql, [$id]);
     }

@@ -23,7 +23,7 @@ class Router {
         return $this->add('post', $path, $action);
     }
 
-    public function resolve(string $path, string $method) {
+    public function resolve(string $path, string $method): string {
         $route = explode('?', $path)[0];
         $action = $this->routes[$method][$route] ?? null;
 

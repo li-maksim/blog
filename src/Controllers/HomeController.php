@@ -14,7 +14,7 @@ class HomeController extends Controller {
         $this->postsModel = new Posts();
     }
 
-    public function render() {
+    public function render(): string {
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $limit = PAGE_LIMIT;
 

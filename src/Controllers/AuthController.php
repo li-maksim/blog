@@ -16,7 +16,7 @@ class AuthController extends Controller {
         $this->usersModel = new Users();
     }
 
-    public function renderLogin() {
+    public function renderLogin(): string {
         // The data from previous login attempts
         $error = $_SESSION['flash_error'] ?? null;
         $email = $_SESSION['old_email'] ?? null;
@@ -25,7 +25,7 @@ class AuthController extends Controller {
         return $this->renderView('login', ['error' => $error, 'email' => $email]);
     }
 
-    public function renderSignUp() {
+    public function renderSignUp(): string {
         // The data from previous sign up attempts
         $error = $_SESSION['flash_error'] ?? null;
         $username = $_SESSION['old_username'] ?? null;
@@ -35,7 +35,7 @@ class AuthController extends Controller {
         return $this->renderView('signup', ['error' => $error, 'username' => $username, 'email' => $email]);
     }
 
-    public function signUp() {
+    public function signUp(): never {
 
         if (empty($_POST['username']) || empty($_POST['email']) || empty($_POST['password'])) {
             $_SESSION['flash_error'] = "Please fill out all the required fields";
@@ -68,7 +68,7 @@ class AuthController extends Controller {
         }
     }
 
-    public function login() {
+    public function login(): never {
         // Confirming that there are no empty fields
         if ($_POST['email'] == '' || $_POST['password'] == '') {
             $_SESSION['flash_error'] = "Please fill out all the required fields";
@@ -105,7 +105,7 @@ class AuthController extends Controller {
         }
     }
 
-    public function logout(): void {
+    public function logout(): never {
         $_SESSION= [];
 
         if (ini_get("session.use_cookies")) {

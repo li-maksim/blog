@@ -21,7 +21,7 @@ class UserPageController extends Controller {
     }
 
     // Shared logic between rendering /my_page and other users' pages
-    private function renderUserPage(bool $isMyPage, string $name) {
+    private function renderUserPage(bool $isMyPage, string $name): string {
         try {
             $user = $this->usersModel->getUserByName($name);
         } catch (ThisUserDoesntExist $e) {
@@ -80,7 +80,7 @@ class UserPageController extends Controller {
     }
 
     // Shared logic between rendering posts and comments of a particular user
-    private function renderUserInfo(string $type) {
+    private function renderUserInfo(string $type): string {
         $username = $_GET['name'];
 
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -147,7 +147,7 @@ class UserPageController extends Controller {
         ]);
     }
 
-    public function renderMyPage() {
+    public function renderMyPage(): string {
         if (!$this->checkIfLoggedin()) {
             return $this->renderView('404');
         }
@@ -155,9 +155,7 @@ class UserPageController extends Controller {
         return $this->renderUserPage(true, $name);
     }
 
-
-
-    public function renderOtherUsersPage() {
+    public function renderOtherUsersPage(): string {
         $name = $_GET['name'];
         // Redirecting to /my_page if the user's id is matching the logged in user's id
         if (!empty($_SESSION['account_name']) && $name === $_SESSION['account_name']) {
@@ -167,83 +165,11 @@ class UserPageController extends Controller {
         return $this->renderUserPage(false, $name);
     }
 
-    public function renderUserPosts() {
+    public function renderUserPosts(): string {
         return $this->renderUserInfo('posts');
-        // $username = $_GET['name'];
-
-        // $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        // $limit = PAGE_LIMIT;
-
-        // $postsData = $this->postsModel->getPostsByUsername($username, $currentPage, $limit);
-        // $totalPosts = $this->postsModel->getAmountByUsername($username);
-        // $totalPages = ceil($totalPosts / $limit);
-
-        // $allPosts = '';
-        // $editable = false;
-
-        // if (!empty($postsData[0]['author_id']) && !empty($_SESSION['account_id']) && $postsData[0]['author_id'] === $_SESSION['account_id']) {
-        //     $editable = true;
-        // }
-
-        // foreach($postsData as $post) {
-        //     $params = [
-        //         'id' => $post['id'],
-        //         'title' => $post['title'],
-        //         'body' => $this->shortenStr($post['body']),
-        //         'createdAt' => $this->formatDate($post['created_at']),
-        //         'author' => $post['author_name'],
-        //         'editable' => $editable
-        //     ];
-        //     $allPosts .= View::show('postCard', $params, true);
-        // }
-
-        // $paginationLinks = $this->generatePaginationLinks($currentPage, $totalPages, "?name=$username&page=");
-
-        // return $this->renderView('/user/posts', 
-        //     ['username' => $username,
-        //     'allPosts' => $allPosts, 
-        //     'paginationLinks' => $paginationLinks
-        // ]);
     }
 
-    public function renderUserComments() {
+    public function renderUserComments(): string {
         return $this->renderUserInfo('comments');
-        // $username = $_GET['name'];
-
-        // $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        // $limit = PAGE_LIMIT;
-
-        // $comments = $this->commentsModel->getCommentsByUsername($username, $currentPage, $limit);
-        // $totalComments = $this->commentsModel->getAmountByUsername($username);
-        // $totalPages = ceil($totalComments / $limit);
-
-        // $allComments = '';
-        // $isAuthor = false;
-
-        // if (!empty($comments[0]['author_id']) && !empty($_SESSION['account_id']) && $comments[0]['author_id'] === $_SESSION['account_id']) {
-        //     $isAuthor = true;
-        // }
-
-        // foreach($comments as $comment) {
-        //     $postTitle = $this->postsModel->getPostById($comment['post_id'])['title'];
-        //     $params = [
-        //         'createdAt' => $this->formatDate($comment['created_at']),
-        //         'body' => $comment['body'],
-        //         'postTitle' => $postTitle,
-        //         'postId' => $comment['post_id'],
-        //         'commentId' => $comment['id'],
-        //         'isAuthor' => $isAuthor
-        //     ];
-        //     $allComments .= View::show('commentCard', $params, true);
-        // }
-
-        // $paginationLinks = $this->generatePaginationLinks($currentPage, $totalPages, "?name=$username&page=");
-
-        // return $this->renderView('/user/comments', 
-        //     [
-        //     'username' => $username, 
-        //     'allComments' => $allComments,
-        //     'paginationLinks' => $paginationLinks
-        // ]);
     }
 }

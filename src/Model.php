@@ -55,7 +55,7 @@ abstract class Model {
         }
     }
 
-    protected function executeSql(string $sql, array $vals = []) {
+    protected function executeSql(string $sql, array $vals = []): \PDOStatement {
         try {
             $stmt = $this->pdo->prepare($sql);
             if (!count($vals)) {

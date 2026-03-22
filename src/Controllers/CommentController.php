@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types = 1);
 namespace App\Controllers;
 
 use App\Controller;
@@ -12,7 +13,7 @@ class CommentController extends Controller {
         $this->commentsModel = new Comments();
     }
 
-    public function deleteComment() {
+    public function deleteComment(): string {
         $commentId = $_GET['id'];
         $comment = $this->commentsModel->getCommentById($commentId);
         if ((!empty($_SESSION['account_id']) && $_SESSION['account_id'] === $comment['author_id'])

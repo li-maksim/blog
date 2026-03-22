@@ -18,7 +18,7 @@ class PostController extends Controller {
         $this->commentsModel = new Comments();
     }
 
-    private function getPostId() {
+    private function getPostId(): string {
         return $_GET['id'];
     }
 
@@ -31,7 +31,7 @@ class PostController extends Controller {
         }
     }
 
-    public function renderCreatePage() {
+    public function renderCreatePage(): string {
         if ($_SESSION['account_loggedin'] ?? false) {
             return $this->renderView('post/create', ['edit' => false]);
         } else {
@@ -39,7 +39,7 @@ class PostController extends Controller {
         }
     }
 
-    public function renderPost() {
+    public function renderPost(): string {
         $id = $this->getPostId();
 
         $post = $this->postsModel->getPostById($id);
@@ -103,7 +103,7 @@ class PostController extends Controller {
         exit;
     }
 
-    public function renderEditPage() {
+    public function renderEditPage(): string {
         $post = $this->postsModel->getPostById($this->getPostId());
 
         if (!$this->verifyAuthor()) {
@@ -117,7 +117,7 @@ class PostController extends Controller {
         ]);
     }
 
-    public function updatePost() {
+    public function updatePost(): never {
         $id = $this->getPostId();
 
         if (empty($_POST['title']) || empty($_POST['body'])) {
@@ -136,7 +136,7 @@ class PostController extends Controller {
         exit;
     }
 
-    public function deletePost() {
+    public function deletePost(): string {
         if (!$this->verifyAuthor() && !$this->checkIfAdmin()) {
             return View::show('404');
         }
@@ -146,7 +146,7 @@ class PostController extends Controller {
         exit;
     }
 
-    public function postNewComment() {
+    public function postNewComment(): never {
         $this
             ->commentsModel
             ->postNewComment($this->getPostId(), (string) $_SESSION['account_id'], $_POST['body']);

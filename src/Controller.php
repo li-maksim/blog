@@ -6,11 +6,11 @@ use App\View;
 
 abstract class Controller {
 
-    protected function renderView(string $path, array $params = []) {
+    protected function renderView(string $path, array $params = []): string {
         return View::show($path, $params);
     }
 
-    protected function formatDate($date) {
+    protected function formatDate($date): string {
         if ($date == null) {
             return false;
         }
@@ -18,7 +18,7 @@ abstract class Controller {
         return date_format($dateTime, 'd.m.Y, H:i');
     }
 
-    protected function checkIfLoggedin() {
+    protected function checkIfLoggedin(): bool {
         if (empty($_SESSION['account_loggedin'])) {
             return false;
         } else {
@@ -34,7 +34,7 @@ abstract class Controller {
         }
     }
 
-    protected function generatePaginationLinks($currentPage, $totalPages, $href = '?page=') {
+    protected function generatePaginationLinks($currentPage, $totalPages, $href = '?page='): string {
         if ($totalPages > 1) {
             $links = '<ul class="pagination justify-content-center mt-3">';
             $maxLinksToShow = 5;
